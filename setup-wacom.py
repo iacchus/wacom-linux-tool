@@ -26,13 +26,13 @@ class Device:
         """Represents a device, which can be a `pad`, a `stylus`, an `eraser`
             etc
         """
-
         self.name = name
         self.id = id
         self.dev_type = dev_type
 
+
     def get_option(self, option):
-        """Gets am option parameter from the device's atual configuration"""
+        """Reads an option parameter from the device's atual configuration"""
 
         command = COMMANDS["get_option"](self.name, option)
         return XSETWACOM.run(command)
@@ -88,7 +88,7 @@ DEVICES = get_devices()
 
 if __name__ == "__main__":
 
-    # my devices, for later easy reference
+    # my devices, for easy later reference
     pad = "Wacom Intuos S Pad pad"
     stylus = "Wacom Intuos S Pen stylus"
     eraser = "Wacom Intuos S Pen eraser"
@@ -114,4 +114,4 @@ if __name__ == "__main__":
     DEVICES[pad].set_button(button="9", value="button +13")
     DEVICES[pad].set_button(button="8", value="button +14")
 
-    print(get_devices())
+    print(DEVICES)
