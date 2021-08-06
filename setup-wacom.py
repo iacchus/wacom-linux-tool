@@ -19,24 +19,33 @@ EXIT_CODE = 0
 STDOUT = 1
 STDERR = 2
 
+
 class Device:
+
     def __init__(self, name, id, dev_type):
+        """Represents a device, which can be a `pad`, a `stylus`, an `eraser`
+            etc
+        """
+
         self.name = name
         self.id = id
         self.dev_type = dev_type
 
     def get_option(self, option):
-        """Gets a parameter from the device's atual configuration"""
+        """Gets am option parameter from the device's atual configuration"""
+
         command = COMMANDS["get_option"](self.name, option)
         return XSETWACOM.run(command)
 
     def set_option(self, option, value):
-        """Sets a parameter to the device's atual configuration"""
+        """Sets an option parameter to the device's atual configuration"""
+
         command = COMMANDS["set_option"](self.name, option, value)
         return XSETWACOM.run(command)
 
     def set_button(self, button, value):
-        """Sets a parameter to the device's atual configuration"""
+        """Sets a button parameter to the device's atual configuration"""
+
         command = COMMANDS["set_button"](self.name, button, value)
         return XSETWACOM.run(command)
 
@@ -45,6 +54,7 @@ class Device:
 
     def __repr__(self):
         return f"<Device '{self.name}' (id {self.id})>"
+
 
 def get_devices():
 
@@ -58,9 +68,9 @@ def get_devices():
     # er       \tid: 20\ttype: ERASER    \n'
     #
     command = COMMANDS["list_devices"]
-    output = XSETWACOM.run(command)[STDOUT]
+    list_devices_output = XSETWACOM.run(command)[STDOUT]
 
-    for device in output. \
+    for device in list_devices_output. \
             strip(). \
             splitlines():
 
@@ -69,28 +79,39 @@ def get_devices():
         id = raw_output[1].split(" ")[-1].strip()
         dev_type = raw_output[2].strip().split(" ")[-1]
 
-        devices_dict.update({name: Device(name=name, id=id, dev_type=dev_type)})
+        devices_dict.update({name: Device(name=name, id=id,
+                                          dev_type=dev_type)})
 
     return devices_dict
 
 DEVICES = get_devices()
 
-pad = "Wacom Intuos S Pad pad"
-stylus = "Wacom Intuos S Pen stylus"
-eraser = "Wacom Intuos S Pen eraser"
-
-# ExpressKeys are:
-# 3     9
-# 1     8
-
-#DEVICES[stylus].set(option="Mode", value="Absolute")
-DEVICES[stylus].set_option(option="Mode", value="Relative")
-
-DEVICES[pad].set_button(button="3", value="button +11")
-DEVICES[pad].set_button(button="1", value="button +12")
-DEVICES[pad].set_button(button="9", value="button +13")
-DEVICES[pad].set_button(button="8", value="button +14")
-
 if __name__ == "__main__":
+
+    # my devices, for later easy reference
+    pad = "Wacom Intuos S Pad pad"
+    stylus = "Wacom Intuos S Pen stylus"
+    eraser = "Wacom Intuos S Pen eraser"
+
+    # ExpressKeys are:
+    # 3     9        ->    11    13
+    # 1     8        to    12    14
+
+    # Pen
+    # - tip: 1
+    # - button closer to the tip: 15
+    # - other button: 16
+
+    #DEVICES[stylus].set(option="Mode", value="Absolute")
+    DEVICES[stylus].set_option(option="Mode", value="Relative")
+
+    DEVICES[stylus].set_button(button="2", value="button +15")
+    DEVICES[stylus].set_button(button="3", value="button +16")
+    DEVICES[stylus].set_button(button="8", value="button 1")
+
+    DEVICES[pad].set_button(button="3", value="button +11")
+    DEVICES[pad].set_button(button="1", value="button +12")
+    DEVICES[pad].set_button(button="9", value="button +13")
+    DEVICES[pad].set_button(button="8", value="button +14")
 
     print(get_devices())
