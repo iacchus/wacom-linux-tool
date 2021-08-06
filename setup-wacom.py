@@ -9,7 +9,9 @@ COMMANDS = {
     "list_devices": ("--list", "devices"),
     "get_option": lambda device, option: ("--get", device, option),
     "set_option": lambda device, option, value: ("--set", device, option,
-                                                 value)
+                                                 value),
+    "set_button": lambda device, button, value: ("--set", device, "Button",
+                                                 button, value),
 }
 
 # plumbum's LocalCommand.run() -> (exit_code, stdout, stderr,)
@@ -23,14 +25,19 @@ class Device:
         self.id = id
         self.dev_type = dev_type
 
-    def get(self, option):
+    def get_option(self, option):
         """Gets a parameter from the device's atual configuration"""
         command = COMMANDS["get_option"](self.name, option)
         return XSETWACOM.run(command)
 
-    def set(self, option, value):
+    def set_option(self, option, value):
         """Sets a parameter to the device's atual configuration"""
         command = COMMANDS["set_option"](self.name, option, value)
+        return XSETWACOM.run(command)
+
+    def set_button(self, button, value):
+        """Sets a parameter to the device's atual configuration"""
+        command = COMMANDS["set_button"](self.name, button, value)
         return XSETWACOM.run(command)
 
     def __str__(self):
@@ -72,8 +79,17 @@ pad = "Wacom Intuos S Pad pad"
 stylus = "Wacom Intuos S Pen stylus"
 eraser = "Wacom Intuos S Pen eraser"
 
+# ExpressKeys are:
+# 3     9
+# 1     8
+
 #DEVICES[stylus].set(option="Mode", value="Absolute")
-DEVICES[stylus].set(option="Mode", value="Relative")
+DEVICES[stylus].set_option(option="Mode", value="Relative")
+
+DEVICES[pad].set_button(button="3", value="button +11")
+DEVICES[pad].set_button(button="1", value="button +12")
+DEVICES[pad].set_button(button="9", value="button +13")
+DEVICES[pad].set_button(button="8", value="button +14")
 
 if __name__ == "__main__":
 
