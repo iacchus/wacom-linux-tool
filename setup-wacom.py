@@ -105,13 +105,13 @@ if __name__ == "__main__":
     #DEVICES[stylus].set(option="Mode", value="Absolute")
     DEVICES[stylus].set_option(option="Mode", value="Relative")
 
-    DEVICES[stylus].set_button(button="2", value="button +15")
-    DEVICES[stylus].set_button(button="3", value="button +16")
-    DEVICES[stylus].set_button(button="8", value="button 1")
+    DEVICES[stylus].set_button(button="2", value="button 15")
+    DEVICES[stylus].set_button(button="3", value="button 16")
+    DEVICES[stylus].set_button(button="8", value="button 3")  # wtf
 
-    DEVICES[pad].set_button(button="3", value="button +11")
-    DEVICES[pad].set_button(button="1", value="button +12")
-    DEVICES[pad].set_button(button="9", value="button +13")
-    DEVICES[pad].set_button(button="8", value="button +14")
+    DEVICES[pad].set_button(button="3", value="button 11")
+    DEVICES[pad].set_button(button="1", value="button 12")
+    DEVICES[pad].set_button(button="9", value="button 13")
+    DEVICES[pad].set_button(button="8", value="button 14")
 
     print(DEVICES)
