@@ -4,6 +4,7 @@
 from plumbum import local
 
 xsetwacom = local["xsetwacom"]
+XSETWACOM = local["xsetwacom"]
 
 pad = "Wacom Intuos S Pad pad"
 stylus = "Wacom Intuos S Pen stylus"
@@ -27,7 +28,7 @@ def get_devices():
         dev_type = raw_output[2].strip().split(" ")[-1]
 
         device_list.append(Device(name=name, id=id, dev_type=dev_type))
-    
+
     return device_list
 
 class Device:
@@ -36,25 +37,26 @@ class Device:
         self.id = id
         self.dev_type = dev_type
 
-    def get(self, option):
-        pass
+    def get_option(self, option):
+        command = COMMANDS["get_option"](option)
+        return XSETWACOM.run(command)
 
-    def set(self, option, value):
-        pass
+    def set_option(self, option, value):
+        command = COMMANDS["set_option"](option, value)
+        return XSETWACOM.run(command)
 
     def __str__(self):
-        return """name: {self.name} id: {self.id} type: {self.dev_type}"""
-
+        return f"name: {self.name} id: {self.id} type: {self.dev_type}"
 
     def __repr__(self):
-        return f"""<Device '{self.name}' (id {self.id})>"""
+        return f"<Device '{self.name}' (id {self.id})>"
 
 
 DEVICES = get_devices()
 
 COMMANDS = {
-    "get_option": ("--get", option),
-    "set_option": ()
+    "get_option": lambda option: ("--get", option),
+    "set_option": lambda option, value: ("--set", option, value)
 }
 mode_relative = xsetwacom["--set", stylus, "Mode", "Relative"]
 mode_absolute = xsetwacom["--set", stylus, "Mode", "Absolute"]
