@@ -18,8 +18,10 @@ device = "Wacom Intuos S Pen stylus"
 sizex = (XB/100) * percent
 sizey = (YB/100) * percent
 
-offsetx = XB / (100/(percent/2))
-offsety = YB / (100/(percent/2))
+# offsetx = XB / (100/(percent/2))
+# offsety = YB / (100/(percent/2))
+offsetx = (XB/100) * ((100-percent)/2)
+offsety = (YB/100) * ((100-percent)/2)
 
 xa = round(offsetx)
 ya = round(offsety)
