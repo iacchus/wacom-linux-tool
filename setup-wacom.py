@@ -87,6 +87,8 @@ def get_devices():
 DEVICES = get_devices()
 
 if __name__ == "__main__":
+    #import time
+    #time.sleep(1)
 
     # my devices, for easy later reference
     pad = "Wacom Intuos S Pad pad"
@@ -106,7 +108,7 @@ if __name__ == "__main__":
     DEVICES[stylus].set_option(option="Mode", value="Relative")
 
     DEVICES[stylus].set_button(button="1", value="button +1")
-    DEVICES[stylus].set_button(button="2", value="button +15")
+    #DEVICES[stylus].set_button(button="2", value="button +15")
 #     DEVICES[stylus].set_button(button="3", value="button 16")
     DEVICES[stylus].set_button(button="3", value="button +3")
     DEVICES[stylus].set_button(button="8", value="button 3")  # wtf
